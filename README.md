@@ -22,3 +22,25 @@ produced to implement a given analysis. At a bare minimum, such tools include
     [`Quarto`](https://quarto.org/), an open-source scientific and technical
     publishing system that extends `R Markdown`.
 
+Note the directory structure of this repository
+
+```{sh}
+$ tree -L 2
+.
+├── README.md
+├── refs.bib
+├── renv
+│   ├── activate.R
+│   ├── library
+│   └── settings.json
+├── renv.lock
+└── template.qmd
+
+3 directories, 6 files
+```
+which includes an `renv` directory (and associated `.Rprofile`); a `Quarto`
+file `template.qmd` with corresponding BibTeX database `refs.bib`; and a few
+hidden files (like `.here` from the [`here` R package](https://here.r-lib.org/))
+and directories (like `.git`). It is important that you familiarize yourself
+with these tools.
+
