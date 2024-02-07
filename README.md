@@ -40,7 +40,7 @@ $ tree -L 2
 ```
 which includes an `renv` directory (and associated `.Rprofile`); a `Quarto`
 file `template.qmd` with corresponding BibTeX database `refs.bib`; and a few
-hidden files (like `.here` from the [`here` R package](https://here.r-lib.org/))
-and directories (like `.git`). It is important that you familiarize yourself
-with these tools.
+hidden files (like `.here` from the [`here` R package](https://here.r-lib.org/)
+and `.gitignore`) and directories (like `.git`). It is important that you
+familiarize yourself with these tools, including their basic anatomy.
 
