@@ -31,9 +31,13 @@ bibliography: refs.bib
 #| echo: false
 #| message: false
 #| label: global-setup
-renv::load(here::here())
+# NOTE: The immediately following line loads an renv environment located at the
+#       nearest "top-level" directory, as marked by a `.here` file, which is
+#       located by the here::here() function. This would be a useful tool if,
+#       say, this template.qmd file was not located at the top-level directory.
+#       Here, renv should activate automatically when this file is opened.
+#renv::load(here::here())
 library(here)
-set.seed(11249)
 ```
 
 \footnotesize
