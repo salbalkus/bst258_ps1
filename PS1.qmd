@@ -1,0 +1,236 @@
+---
+title: "Problem Set #1"
+subtitle: "BST 258: Causal Inference -- Theory and Practice"
+author: "Salvador Balkus"
+date: ""
+execute:
+  cache: true
+format:
+  pdf:
+    documentclass: scrartcl
+    papersize: letter
+    fontsize: 11pt
+    geometry:
+      - margin=1in
+      - heightrounded
+    number-sections: false
+    colorlinks: true
+    link-citations: true
+    callout-appearance: simple
+    callout-icon: false
+    # figure options
+    fig-width: 6
+    fig-asp: 0.618
+    fig-cap-location: bottom
+    # code block options
+    code-line-numbers: false
+    code-block-bg: false
+    highlight-style: gruvbox
+bibliography: refs.bib
+---
+
+```{julia}
+#| echo: false
+#| output: false
+using Pkg
+cd(@__DIR__)
+Pkg.activate(".")
+```
+
+
+## Question 2
+
+### (a)
+
+COME BACK TO THIS
+
+Assuming $A_i \in \{0, 1\}$, the marginal distribution of the first sampled unit $i$ is $P(A_i = 1) = \frac{m}{n}$ and $P(A_i = 0) = 1 - \frac{m}{n}$.
+
+### (b)
+
+WLOG, assume that $A_i$'s treatment is sampled first, then $A_j$. Then, 
+
+$P(A_i = a_i, A_j = a_j) = P(A_j = a_j | A_i = a_i) \cdot P(A_i = a_i)$
+
+Plugging in part (a) and noting that the number of total units and treated units for $A_j$ is reduced by 1 after sampling $A_i$, we find that the joint distribution of $A_i$ and $A_j$ is given by:
+
+- $P(A_i = 1, A_j = 1) = \frac{m}{n} \cdot \frac{m-1}{n-1} = \frac{m(m-1)}{n(n-1)}$
+- $P(A_i = 0, A_j = 1) = \frac{m}{n} \cdot \Big(1 - \frac{m-1}{n-1}\Big) = \frac{m(n-m)}{n(n-1)}$
+- $P(A_i = 1, A_j = 0) = \Big(1 - \frac{m}{n}\Big) \cdot \Big(\frac{m}{n-1}\Big) = \frac{m(n-m)}{n(n-1)}$
+- $P(A_i = 0, A_j = 0) = \Big(1 - \frac{m}{n}\Big) \cdot \Big(1 - \frac{m-1}{n-1}\Big) = \frac{(n-m)^2}{n(n-1)}$
+
+Then the joint pmf is given by the following table:
+
+|           |  $A_i = 0$              | $A_i = 1$ |
+| $A_j = 0$ | $\frac{m(m-1)}{n(n-1)}$ | $\frac{m(n-m)}{n(n-1)}$  |
+| $A_j = 1$ | $\frac{m(n-m)}{n(n-1)}$ | $\frac{(n-m)^2}{n(n-1)}$ |
+
+### (c)
+
+### (d)
+
+{{< pagebreak >}}
+
+
+## Question 3
+
+Since $Y_i(1) = Y_i(0) + \theta$, we have the property of variance that $\mathbb{V}(X + b) = \mathbb{V}(X)$. Even when considering the sample variance, this follows because
+
+$\mathbb{V}(X + b) = \mathbb{E}((X + b - \mathbb{E}(X + b))^2) = \mathbb{E}((X - \mathbb{E}(X))^2) = \mathbb{V}(X)$
+
+with $b$ canceling due to linearity of expectation. Therefore, substituting in the given equality we have 
+
+$\mathbb{V}(Y_i(1)) = \mathbb{V}(Y_i(0) + \theta) = \mathbb{V}(Y_i(0))$
+
+Using this, we can note the similar property of covariance that $Cov(X + b, Y + c) = Cov(X, Y)$; in the sample setting this follows from
+
+$Cov(X + b, Y + c) = \mathbb{E}((X + b - \mathbb{E}(X + b))(X + c - \mathbb{E}(X + c))) = \mathbb{E}((X - \mathbb{E}(X))(X - \mathbb{E}(X)))= Cov(X, Y)$
+
+Using this property, we have that
+
+$$
+\begin{align}
+\rho(Y_i(1), Y_i(0)) = \frac{Cov(Y_i(1), Y_i(0))}{\sqrt{\mathbb{V}(Y_i(1))\cdot\mathbb{V}(Y_i(0))}}\\
+= \frac{Cov(Y_i(0) + \theta, Y_i(0))}{\sqrt{\mathbb{V}(Y_i(0))\cdot \mathbb{V}(Y_i(0))}}\\
+= \frac{Cov(Y_i(0), Y_i(0))}{\sqrt{\mathbb{V}(Y_i(0))^2}}= \frac{\mathbb{V}(Y_i(0))}{\mathbb{V}(Y_i(0))} = 1\\
+\end{align}
+$$
+
+thereby completing the proof. $\square$
+
+{{< pagebreak >}}
+
+## Question 4
+
+There are 70 possible ways to choose 4 out of 8 cups as those that had tea poured first (thereby leaving the remaining 4 as those that had milk poured first). This is because ${8 \choose 4} = \frac{8!}{4!(8-4)!} = 70$. 
+
+Therefore, the probability of guessing $k$ cups correctly is ${4 \choose k} \cdot {4 \choose 4-k} \cdot \frac{1}{70}$. That is, the probability is the product the number of possible ways to choose $k$ cups correctly and the number of possible ways to choose the remaining $4-k$ cups incorrectly, divided by the total number of possible ways to choose 4 cups.
+
+Hence, we have:
+
+- Probability of 0 cups correct: $\frac{1}{70}$ (only one possibility, all four wrong)
+- Probability of 1 cup correct: ${4\choose 3} \cdot {4\choose 1} \cdot \frac{1}{70} = \frac{16}{70}$
+- Probability of 2 cups correct: ${4\choose 2} \cdot {4\choose 2} \cdot \frac{1}{70} = \frac{36}{70}$
+- Probability of 3 cups correct: ${4\choose 1} \cdot {4\choose 3} \cdot \frac{1}{70} = \frac{16}{70}$
+- Probability of 4 cups correct: $\frac{1}{70}$ (only one possibility, all four correct)
+
+{{< pagebreak >}}
+
+## Question 5
+
+### (a)
+
+*First*, we can notice that those with large kidney stones received Treatment A much more often (263/343 times, ~77%), while those with small kidney stones received Treatment B more often (234/357 times, ~66%). *Second*, we can also note that those who experienced large stones had a lower probability of being successfully treated across both treatments (73% large versus 93% small for A, 69% large versus 87% small for B).
+
+Putting these two facts together, we can conclude that Treatment B probably appeared more successful in aggregate because it was more frequently used to treat small kidney stones, the type of outcome more likely to be treated succesfully regardless of treatment type. However, in reality, if we "control" for outcome type via stratification, Treatment A is actually more effective -- which is probably why it was more frequently used for cases of large kidney stones that were "more difficult" to treat.
+
+### (b)
+
+|               | Treatment A   | Treatment B   |
+| Male, Small   | 95% (74/78)   | 99% (69/70)   |
+| Female, Small | 77% (7/9)     | 83% (165/200) |
+| Male, Large   | 49% (21/43)   | 62% (37/60)   |
+| Female, Large | 78% (171/220) | 90% (18/20)   |
+| All           | 78% (273/350) | 83% (289/350) |
+
+
+### (c)
+
+This phenomenon is known as **Simpson's Paradox** (@Pearl2014): when the association between two varaibles reverses upon conditioning of a third variable. For causal inference, it implies that in order to obtain a true causal relationship, we need to control for confounding variables that might change the probability of a given treatment assignment. Otherwise, a situation might arise in which one treatment appears better only because it was more likely to be assigned to an individual more likely to exhibit a positive outcome -- not because it is more effective.
+
+{{< pagebreak >}}
+
+## Question 6
+
+```{julia}
+using Distributions
+using Plots
+using Random
+
+function run_trial(μ₀, μ₁, σ², n, α, n_sim, B)
+
+  # sample counterfactuals
+  Y1 = rand(Normal(μ₁, sqrt(σ²)), n)
+  Y0 = rand(Normal(μ₀, sqrt(σ²)), n)
+
+  # sample treatment assignment matrix
+  A = rand(Bernoulli(0.5), n, n_sim)
+  Y = map(A -> (@. A * Y1 + (1 - A) * Y0), eachcol(A))
+
+  # calculate difference-in-means test statistic across simulations
+  m1(Y, A) = mean(Y[A .== 1]) 
+  m0(Y, A) = mean(Y[A .== 0])
+  dif_in_means(Y, A) = abs(m1(Y, A) - m0(Y, A))
+  ψ_ate = [dif_in_means(Y[i], A[:, i]) for i in 1:n_sim]
+
+  # calculate sharp null p-values
+  sharp_null(Y, A, ψ) = mean(dif_in_means(Y, shuffle(A)) >= ψ for _ in 1:B)
+  p_sharp = [sharp_null(Y[i], A[:, i], ψ_ate[i]) for i in 1:n_sim]
+
+  # calculate weak null p-values
+  p_est = mean(A, dims = 1)
+  var_ate(Y, A, p) = (var(Y[A .== 1]) / p) + (var(Y[A .== 0]) / (1 - p))
+  σ²_est = [var_ate(Y[i], A[:, i], p_est[i]) for i in 1:n_sim]
+  p_weak = @. 2*(1 - cdf(Normal(0, sqrt(σ²_est / n)), ψ_ate))
+
+  # calculate power of the trial
+  power_sharp = mean(p_sharp .< α)
+  power_weak = mean(p_weak .< α)
+
+  return power_sharp, power_weak
+end
+
+
+```
+
+```{julia}
+ns = [20, 50, 100, 200, 500]
+μ₀ = 0
+μ₁ = 1/10
+σ² = 1/16
+α = 0.05
+n_sim = 1000
+B = 10000
+
+result = [run_trial(μ₀, μ₁, σ², n, α, n_sim, B) for n in ns]
+power_sharp = [r[1] for r in result]
+power_weak = [r[2] for r in result]
+
+```
+
+
+```{julia}
+plot([power_sharp, power_weak], 
+          marker = :circle,
+          xticks = (1:5, string.(ns)),
+          xaxis = "Samples", 
+          yaxis = "Power",
+          labels = ["Sharp Null" "Weak Null"])
+```
+
+
+{{< pagebreak >}}
+
+## Question 7
+{{< pagebreak >}}
+
+### (a)
+
+```{julia}
+
+```
+
+
+
+### (b)
+
+# Acknowledgements
+A disclosure for academic honesty: GitHub Copilot was used to prepare this assignment. However, only minor uses of the text/code autocomplete feature were used. 
+
+## References
+
+::: {#refs}
+:::
+
+
+
