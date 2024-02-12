@@ -184,6 +184,7 @@ end
 ```
 
 ```{julia}
+Random.seed!(1)
 ns = [20, 50, 100, 200, 500]
 μ₀ = 0
 μ₁ = 1/10
@@ -206,6 +207,8 @@ plot([power_sharp, power_weak],
           xaxis = "Samples", 
           yaxis = "Power",
           labels = ["Sharp Null" "Weak Null"])
+
+savefig()
 ```
 
 
