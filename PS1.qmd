@@ -3,6 +3,8 @@ title: "Problem Set #1"
 subtitle: "BST 258: Causal Inference -- Theory and Practice"
 author: "Salvador Balkus"
 date: ""
+execute: 
+  cache: true
 format:
   pdf:
     documentclass: scrartcl
@@ -37,17 +39,28 @@ Pkg.activate(".")
 
 ## Question 1
 
-Insert link to github repo
+The GitHub Repository for this assignment can be found at the following link: 
+
+[https://github.com/salbalkus/bst258_ps1](https://github.com/salbalkus/bst258_ps1)
+
+Note that I am using Julia, so dependencies are tracked using the Project.toml and Manifest.toml files.
 
 ## Question 2
 
+Consider a completely randomized experiment (CRE) with $m$ units treated.
+
 ### (a)
+
+What is the marginal distribution of the treatment indicator $A$?
 
 :::{.callout-note title="Answer"}
 Assuming $A_i \in \{0, 1\}$, the marginal distribution of the first sampled unit $i$ is $P(A_i = 1) = \frac{m}{n}$ and $P(A_i = 0) = 1 - \frac{m}{n} = \frac{n - m}{n}$.
 :::
 
 ### (b)
+
+What is the joint distribution of $A_i$ and $A_j$
+for two units $i \neq j$?
 
 :::{.callout-note title="Answer"}
 WLOG, assume that $A_i$'s treatment is sampled first, then $A_j$. Then, 
@@ -63,13 +76,21 @@ Plugging in part (a) and noting that the number of total units and treated units
 
 Then the joint pmf is given by the following table:
 
-|           |  $A_i = 0$              | $A_i = 1$ |
+| | | |
+|:---------:|:------------------------:|:------------------------:|
+|           |  $A_i = 0$               | $A_i = 1$                |
 | $A_j = 0$ | $\frac{(n-m)^2}{n(n-1)}$ | $\frac{m(n-m)}{n(n-1)}$  |
-| $A_j = 1$ | $\frac{m(n-m)}{n(n-1)}$ | $\frac{m(m-1)}{n(n-1)}$ |
+| $A_j = 1$ | $\frac{m(n-m)}{n(n-1)}$  | $\frac{m(m-1)}{n(n-1)}$  |
+|-----------|--------------------------|--------------------------|
+
 
 :::
 
 ### (c)
+
+What are $\mathbb{V}(A_i)$ and $Cov(A_i, A_j)$ for $i \neq j$?
+
+:::{.callout-note title="Answer"}
 
 **Variance**: Since $A_i$ is marginally $\text{Bernoulli}(\frac{m}{n})$, the variance is known to be 
 
@@ -85,26 +106,33 @@ which gives the same result.
 
 $Cov(A_i, A_j) = \frac{m(m-1)}{n(n-1)} - \frac{m^2}{n^2} = frac{nm^2 - nm - m^2n + m^2}{n^2(n-1)} = -\frac{1}{n}(\frac{m(n-m)}{n(n-1)})$
 
+:::
+
 ### (d)
+
+What is the sample ATT in expectation?
+
+:::{.callout-note title="Answer"}
 
 We can compute the expectation of the sample ATT using the linearity of expectation, noting that $A_i \perp\!\!\!\!\perp Y_i(a)$ by definition of a CRE, and that $E(A_i) = P(A_i = 1) = \frac{m}{n}$. Therefore, we have
 
-```{math}
 \begin{align*}
-E(\theta^{ATT}) = \frac{1}{m}\sum_{i=1}^nE(A_i(Y_i(1) - Y_i(0)))\\
-= \frac{n}{m} E(A_i) E(Y_i(1) - Y_i(0))\\
-= \frac{n}{m} \frac{m}{n} E(Y_i(1) - Y_i(0))
-= E(Y_i(1) - Y_i(0)) = \theta^{ATE}
+E(\theta^{ATT}) &= \frac{1}{m}\sum_{i=1}^nE(A_i(Y_i(1) - Y_i(0)))\\
+&= \frac{n}{m} E(A_i) E(Y_i(1) - Y_i(0))\\
+&= \frac{n}{m} \frac{m}{n} E(Y_i(1) - Y_i(0))\\
+&= E(Y_i(1) - Y_i(0)) = \theta^{ATE}
 \end{align*}
-```
 
 So, in expectation, the sample ATT is equal to the population ATE (that is, $E(\theta^{ATT}) = \theta^{ATE}$).
 
+:::
 
 {{< pagebreak >}}
 
 
 ## Question 3
+
+Let $Y_i(1) = Y_i(0) + \theta$. Show that $\mathbb{V}(Y_i(1)) = \mathbb{V}(Y_i(0))$ and the correlation equations 1, where expectations are sample expectations
 
 :::{.callout-note title="Answer"}
 
@@ -122,13 +150,13 @@ $Cov(X + b, Y + c) = \mathbb{E}((X + b - \mathbb{E}(X + b))(X + c - \mathbb{E}(X
 
 Using this property, we have that
 
-```{math}
+
 \begin{align*}
-\rho(Y_i(1), Y_i(0)) = \frac{Cov(Y_i(1), Y_i(0))}{\sqrt{\mathbb{V}(Y_i(1))\cdot\mathbb{V}(Y_i(0))}}\\
-= \frac{Cov(Y_i(0) + \theta, Y_i(0))}{\sqrt{\mathbb{V}(Y_i(0))\cdot \mathbb{V}(Y_i(0))}}\\
-= \frac{Cov(Y_i(0), Y_i(0))}{\sqrt{\mathbb{V}(Y_i(0))^2}}= \frac{\mathbb{V}(Y_i(0))}{\mathbb{V}(Y_i(0))} = 1\\
+\rho(Y_i(1), Y_i(0)) &= \frac{Cov(Y_i(1), Y_i(0))}{\sqrt{\mathbb{V}(Y_i(1))\cdot\mathbb{V}(Y_i(0))}}\\
+&= \frac{Cov(Y_i(0) + \theta, Y_i(0))}{\sqrt{\mathbb{V}(Y_i(0))\cdot \mathbb{V}(Y_i(0))}}\\
+&= \frac{Cov(Y_i(0), Y_i(0))}{\sqrt{\mathbb{V}(Y_i(0))^2}}= \frac{\mathbb{V}(Y_i(0))}{\mathbb{V}(Y_i(0))} = 1
 \end{align*}
-```
+
 
 thereby completing the proof. $\square$
 
@@ -137,6 +165,12 @@ thereby completing the proof. $\square$
 {{< pagebreak >}}
 
 ## Question 4
+
+It’s tea time: (a hologram of) R.A. Fisher places eight cups of tea (with milk) in front of you and
+asks you to identify which cups had tea poured before milk and vice-versa. Prior to giving you
+the cups of tea, Fisher poured milk before tea in four of them and tea before milk in the other
+four. The ordering in which the cups have been served is random. What is the probability that
+you correctly guess 0, 1, 2, 3, or 4 of all of the cups that had tea poured first?
 
 :::{.callout-note title="Answer"}
 There are 70 possible ways to choose 4 out of 8 cups as those that had tea poured first (thereby leaving the remaining 4 as those that had milk poured first). This is because ${8 \choose 4} = \frac{8!}{4!(8-4)!} = 70$. 
@@ -159,6 +193,8 @@ Hence, we have:
 
 ### (a)
 
+Describe possible factors that might have contributed to this seemingly contradictory result.
+
 :::{.callout-note title="Answer"}
 *First*, we can notice that those with large kidney stones received Treatment A much more often (263/343 times, ~77%), while those with small kidney stones received Treatment B more often (234/357 times, ~66%). *Second*, we can also note that those who experienced large stones had a lower probability of being successfully treated across both treatments (73% large versus 93% small for A, 69% large versus 87% small for B).
 
@@ -167,18 +203,27 @@ Putting these two facts together, we can conclude that Treatment B probably appe
 
 ### (b)
 
+Alarmed by this discrepancy, your colleague asks you to further segment the results by reported gender. This newly refined look at the data suggests that for both small and large
+kidney stones, treatment 𝐵 is consistently more effective than treatment 𝐴 across all genders. Construct a hypothetical (i.e., candidate) table that illustrates this.
+
 :::{.callout-note title="Answer"}
 
+| | | |
+|:-------------:|:-------------:|:-------------:|
 |               | Treatment A   | Treatment B   |
 | Male, Small   | 95% (74/78)   | 99% (69/70)   |
 | Female, Small | 77% (7/9)     | 83% (165/200) |
 | Male, Large   | 49% (21/43)   | 62% (37/60)   |
 | Female, Large | 78% (171/220) | 90% (18/20)   |
 | All           | 78% (273/350) | 83% (289/350) |
+|---------------|---------------|---------------|
 
 :::
 
 ### (c)
+
+What is this phenomenon (it has a name)? What are its broader implications and significance
+in the interpretation of data?
 
 :::{.callout-note title="Answer"}
 This phenomenon is known as **Simpson's Paradox** (@Pearl2014): when the association between two variables reverses upon conditioning of a third variable. For causal inference, it implies that in order to obtain a true causal relationship, we need to control for confounding variables that might change the probability of a given treatment assignment. Otherwise, a situation might arise in which one treatment appears better only because it was more likely to be assigned to an individual more likely to exhibit a positive outcome -- not because it is more effective.
@@ -187,6 +232,12 @@ This phenomenon is known as **Simpson's Paradox** (@Pearl2014): when the associa
 {{< pagebreak >}}
 
 ## Question 6
+
+ Conduct a simulation study to illustrate the difference between Fisher's sharp null and Neyman's weak null.
+
+:::{.callout-note title="Answer"}
+
+First, we can load the necessary packages and define a function to run the simulation.
 
 ```{julia}
 using Distributions
@@ -200,7 +251,7 @@ function run_trial(μ₀, μ₁, σ², n, α, n_sim, B)
   Y0 = rand(Normal(μ₀, sqrt(σ²)), n)
 
   # sample treatment assignment matrix
-  A = rand(Bernoulli(0.5), n, n_sim)
+  A = stack(broadcast(n -> sample(vcat(ones(n÷2), zeros(n÷2)), n, replace = false), fill(n, n_sim)))
   Y = map(A -> (@. A * Y1 + (1 - A) * Y0), eachcol(A))
 
   # calculate difference-in-means test statistic across simulations
@@ -229,6 +280,8 @@ end
 
 ```
 
+
+Then, we can actually run the simulation with the specified parameters:
 ```{julia}
 Random.seed!(1)
 ns = [20, 50, 100, 200, 500]
@@ -245,7 +298,7 @@ power_weak = [r[2] for r in result]
 
 ```
 
-
+Finally, we plot the output of the experiment:
 ```{julia}
 plot([power_sharp, power_weak], 
           marker = :circle,
@@ -256,13 +309,21 @@ plot([power_sharp, power_weak],
 
 ```
 
-**Comments**: The power of the weak null hypothesis test is higher than the power of the sharp null hypothesis test across all sample sizes, though they converge to the same value at $n = 500$. This highlights the fact that jaskdfl;ajklefjl;asd
+**Comments**: The power of the weak null hypothesis test is (slightly) higher than the power of the sharp null hypothesis test across all sample sizes, though they converge to the same value at $n = 500$. This is consistent with the fact that Fisher's sharp null implies Neyman's weak null, but that the converse is not necessarily true. However, given that the difference is quite small, it is likely that the sharp null and weak null tests will have similar power in practice, at least for reasonably large sample sizes.
+
+:::
 
 {{< pagebreak >}}
 
 ## Question 7
 
+You have been tasked with estimating the average treatment effect, for which it suffices to solve the least squares program.
+
 ### (a)
+
+Solve the linear program in $(\alpha, \beta)$.
+
+:::{.callout-note title="Answer"}
 
 We can solve the linear program
 
@@ -270,58 +331,56 @@ $\min_{\alpha,\beta} \frac{1}{2n} \sum_{i=1}^n(Y_i - \alpha - \beta A_i)^2$
 
 using the first derivative test, setting the partial derivatives to 0 to obtain solutions:
 
-```{math}
+
 \begin{align*}
-  \frac{\partial}{\partial \alpha} L(\alpha, \beta) = -\frac{1}{n} \sum_{i=1}^n(Y_i - \alpha - \beta A_i) = 0\\
-  \implies \hat{\alpha} =  \beta \bar{A} - \bar{Y}
+  \frac{\partial}{\partial \alpha} L(\alpha, \beta) &= -\frac{1}{n} \sum_{i=1}^n(Y_i - \alpha - \beta A_i) = 0\\
+  \implies \hat{\alpha} &=  \beta \bar{A} - \bar{Y}
 \end{align*}
-```
+
 
 and
 
-```{math}
+
 \begin{align*}
-  \frac{\partial}{\partial \beta} L(\alpha, \beta) = -\frac{1}{n} \sum_{i=1}^n(Y_i - \alpha - \beta A_i)A_i = 0\\
-  \implies \hat{\beta} = \frac{\alpha \bar{A} - \frac{1}{n}\sum_{i=1}^nA_iY_i}{\bar{A^2}}
+  \frac{\partial}{\partial \beta} L(\alpha, \beta) &= -\frac{1}{n} \sum_{i=1}^n(Y_i - \alpha - \beta A_i)A_i = 0\\
+  \implies \hat{\beta} &= \frac{\alpha \bar{A} - \frac{1}{n}\sum_{i=1}^nA_iY_i}{\bar{A^2}}
 \end{align*}
 
-```
+
 
 Plugging in the solution for $\alpha$ into the solution for $\beta$, we obtain
 
-```{math}
+
 \begin{align*}
-\beta = \frac{\beta(\bar{A})^2 - \bar{A}\bar{Y} - \frac{1}{n}\sum_{i=1}^nA_iY_i}{\bar{A^2}}\\
-\implies \beta(\frac{\bar{A}^2 - \bar{A^2}}{\cancel{\bar{A^2}}}) = \frac{\bar{A}\bar{Y} - \frac{1}{n}\sum_{i=1}^nA_iY_i}{\cancel{\bar{A^2}}}\\
-\implies \hat{\beta} = \frac{\sum(Y_i - \bar{Y})(A_i - \bar{A}}{\sum(A_i - \bar{A})^2}
+\beta &= \frac{\beta(\bar{A})^2 - \bar{A}\bar{Y} - \frac{1}{n}\sum_{i=1}^nA_iY_i}{\bar{A^2}}\\
+\implies \beta(\frac{\bar{A}^2 - \bar{A^2}}{\bar{A^2}}) &= \frac{\bar{A}\bar{Y} - \frac{1}{n}\sum_{i=1}^nA_iY_i}{\bar{A^2}}\\
+\implies \hat{\beta} &= \frac{\sum(Y_i - \bar{Y})(A_i - \bar{A}}{\sum(A_i - \bar{A})^2}
 \end{align*}
-```
+
 
 and therefore
 
-```{math}
-\hat{\alpha} =  \hat{\beta}\bar{A} - \bar{Y} = \hat{\beta} = \frac{\sum(Y_i - \bar{Y})(A_i - \bar{A}}{\sum(A_i - \bar{A})^2}\bar{A} - \bar{Y}
-```
+$\hat{\alpha} =  \hat{\beta}\bar{A} - \bar{Y} = \hat{\beta} = \frac{\sum(Y_i - \bar{Y})(A_i - \bar{A}}{\sum(A_i - \bar{A})^2}\bar{A} - \bar{Y}$
 
 By the second derivative test, we can take the partial derivatives to get
 
-```{math}
+
 \begin{align*}
-\frac{\partial}{\partial \alpha^2} L(\alpha, \beta) = n\\
-\frac{\partial}{\partial \beta^2} L(\alpha, \beta) = \frac{1}{n}\sum_{i=1}^nA_i^2\\
-\frac{\partial}{\partial \alpha\partial \beta} L(\alpha, \beta) = \bar{A}
+\frac{\partial}{\partial \alpha^2} L(\alpha, \beta) &= n\\
+\frac{\partial}{\partial \beta^2} L(\alpha, \beta) &= \frac{1}{n}\sum_{i=1}^nA_i^2\\
+\frac{\partial}{\partial \alpha\partial \beta} L(\alpha, \beta) &= \bar{A}
 \end{align*}
-```
+
 
 Now, since $A \in \{0, 1\}$, we have 
 
 
-```{math}
+
 \begin{align*}
-D(\alpha, \beta) = n\cdot \frac{1}{n}\sum_{i=1}^nA_i^2 - \bar{A} = \\
-\sum_{i=1}^nA_i - \frac{1}{n}\sum_{i=1}^nA_i = \frac{n-1}{n} > 0
+D(\alpha, \beta) &= n\cdot \frac{1}{n}\sum_{i=1}^nA_i^2 - \bar{A} = \\
+\sum_{i=1}^nA_i - \frac{1}{n}\sum_{i=1}^nA_i &= \frac{n-1}{n} > 0
 \end{align*}
-```
+
 
 and by the second derivative test, $D(\alpha, \beta) > 0$ and $\frac{\partial}{\partial \alpha^2} L(\alpha, \beta) = n > 0$ implies $(\hat{\alpha}, \hat{\beta})$ is a minimum. It must be a global minimum since it was found to be a unique critical point in the first derivative test, therefore the endpoints cannot be smaller.
 
@@ -333,17 +392,23 @@ and
 
 $\hat{\alpha} = \frac{\sum(Y_i - \bar{Y})(A_i - \bar{A}}{\sum(A_i - \bar{A})^2}\bar{A} - \bar{Y}$
 
+:::
+
 ### (b)
 
-Yes, $\hat{\beta} is a valid estimator of the ATE. We can show this by proving it is unbiased; that $E(\hat{\beta}) = \beta)$. Note that by construction of the completely randomized experiment, $\bar{A} = \frac{m}{n}$. Therefore,
+Is $\hat{\beta}$ a valid estimator of the ATE?
+
+:::{.callout-note title="Answer"}
+
+Yes, $\hat{\beta}$ is a valid estimator of the ATE. We can show this by proving it is unbiased; that $E(\hat{\beta}) = \beta)$. Note that by construction of the completely randomized experiment, $\bar{A} = \frac{m}{n}$. Therefore,
 
 
-```{math}
+
 \begin{align*}
-\sum_{i=1}^n (A_i - \bar{A})^2 = sum_{i=1}^nA_i^2 - 2\frac{m}{n}sum_{i=1}^nA-i + sum_{i=1}^n(\frac{m}{n})^2\\
-= m - 2m + \frac{m^2}{n} = \frac{m(m-n)}{n}
+\sum_{i=1}^n (A_i - \bar{A})^2 &= sum_{i=1}^nA_i^2 - 2\frac{m}{n}sum_{i=1}^nA-i + sum_{i=1}^n(\frac{m}{n})^2\\
+&= m - 2m + \frac{m^2}{n} = \frac{m(m-n)}{n}
 \end{align*}
-```
+
 
 Therefore, it is a constant that can be moved outside the expectation.
 
@@ -351,36 +416,40 @@ Then, noting that  the numerator of $\hat{\beta}$ is $(\hat{Y})(\hat{A}) - \frac
 
 The expectation of the first term in the subtraction reduces to
 
-```{math}
+
 \begin{align*}
-E(\bar{A}\bar{Y}) = \frac{m}{n}E(A_iY_i(1) + (1-A_i)Y_i(0))\\
-= \frac{m^2}{n} E(Y_i(1)) + \frac{m(n-m)}{n}E(Y_i(0))
+E(\bar{A}\bar{Y}) &= \frac{m}{n}E(A_iY_i(1) + (1-A_i)Y_i(0))\\
+&= \frac{m^2}{n} E(Y_i(1)) + \frac{m(n-m)}{n}E(Y_i(0))
 \end{align*}
-```
+
 
 
 The expectation of the second term in the subtraction reduces to 
 
-```{math}
+
 \begin{align*}
-E(\frac{1}{n}\sum_{i=1}^n A_i Y_i) = E(A_i^2Y_i(1) + A_i(1 - A_i)Y_i(1)) = \frac{m}{n}E(Y_i(1))
+E(\frac{1}{n}\sum_{i=1}^n A_i Y_i) &= E(A_i^2Y_i(1) + A_i(1 - A_i)Y_i(1))\\
+&= \frac{m}{n}E(Y_i(1))
 \end{align*}
-```
+
 
 Now, combining these terms and dividing by the denominator $\frac{m(m-n)}{n}$ solved previously, we have
 
 
-```{math}
+
 \begin{align*}
-E(\hat{\beta}) = (m(\frac{m-n}{n})E(Y_i(1)) - \frac{m(m-n)}{n}E(Y_i(0)) -  \frac{m}{n}E(Y_i(1))) / \frac{m(m-n)}{n}\\
-= (m(\frac{m-n}{n})E(Y_i(1)) - \frac{m(m-n)}{n}E(Y_i(0))) / \frac{m(m-n)}{n} \\
-= E(Y_i(0)) - E(Y_i(1))
-```
+E(\hat{\beta}) &= (m(\frac{m-n}{n})E(Y_i(1)) - \frac{m(m-n)}{n}E(Y_i(0)) -  \frac{m}{n}E(Y_i(1))) / \frac{m(m-n)}{n}\\
+&= (m(\frac{m-n}{n})E(Y_i(1)) - \frac{m(m-n)}{n}E(Y_i(0))) / \frac{m(m-n)}{n} \\
+&= E(Y_i(0)) - E(Y_i(1))
+\end{align*}
+
 
 which is the definition of the ATE. Therefore, $E(\hat{\beta}) = E(Y_i(0) - Y_i(1))$ meaning it is an unbiased, and therefore valid estimator of the ATE.
 
+:::
+
 # Acknowledgements
-A disclosure for academic honesty: GitHub Copilot was used to prepare this assignment. However, only minor uses of the text/code autocomplete feature were used. 
+A disclosure for academic honesty: GitHub Copilot was used to prepare this assignment, however, only very minor uses of the text and code autocomplete feature were used. 
 
 ## References
 
