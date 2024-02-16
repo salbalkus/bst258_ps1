@@ -35,6 +35,9 @@ cd(@__DIR__)
 Pkg.activate(".")
 ```
 
+## Question 1
+
+Insert link to github repo
 
 ## Question 2
 
@@ -88,13 +91,14 @@ We can compute the expectation of the sample ATT using the linearity of expectat
 
 ```{math}
 \begin{align*}
-E(\theta^{ATT}) = \frac{1}{n}\sum_{i=1}^nE(A_i(Y_i(1) - Y_i(0)))\\
-= E(A_i Y_i(1) - (1 - A_i)Y_i(0))\\
-= \frac{m}{n} E(Y_i(1)) - (1 - \frac{m}{n})E(Y_i(0))
+E(\theta^{ATT}) = \frac{1}{m}\sum_{i=1}^nE(A_i(Y_i(1) - Y_i(0)))\\
+= \frac{n}{m} E(A_i) E(Y_i(1) - Y_i(0))\\
+= \frac{n}{m} \frac{m}{n} E(Y_i(1) - Y_i(0))
+= E(Y_i(1) - Y_i(0)) = \theta^{ATE}
 \end{align*}
 ```
 
-So, $E(\theta^{ATT}) = \frac{m}{n} E(Y_i(1)) - (1 - \frac{m}{n})E(Y_i(0))$.
+So, in expectation, the sample ATT is equal to the population ATE (that is, $E(\theta^{ATT}) = \theta^{ATE}$).
 
 
 {{< pagebreak >}}
@@ -118,17 +122,17 @@ $Cov(X + b, Y + c) = \mathbb{E}((X + b - \mathbb{E}(X + b))(X + c - \mathbb{E}(X
 
 Using this property, we have that
 
-$$
-\begin{align}
+```{math}
+\begin{align*}
 \rho(Y_i(1), Y_i(0)) = \frac{Cov(Y_i(1), Y_i(0))}{\sqrt{\mathbb{V}(Y_i(1))\cdot\mathbb{V}(Y_i(0))}}\\
 = \frac{Cov(Y_i(0) + \theta, Y_i(0))}{\sqrt{\mathbb{V}(Y_i(0))\cdot \mathbb{V}(Y_i(0))}}\\
 = \frac{Cov(Y_i(0), Y_i(0))}{\sqrt{\mathbb{V}(Y_i(0))^2}}= \frac{\mathbb{V}(Y_i(0))}{\mathbb{V}(Y_i(0))} = 1\\
-\end{align}
-$$
+\end{align*}
+```
 
 thereby completing the proof. $\square$
 
-::
+:::
 
 {{< pagebreak >}}
 
@@ -177,7 +181,7 @@ Putting these two facts together, we can conclude that Treatment B probably appe
 ### (c)
 
 :::{.callout-note title="Answer"}
-This phenomenon is known as **Simpson's Paradox** (@Pearl2014): when the association between two varaibles reverses upon conditioning of a third variable. For causal inference, it implies that in order to obtain a true causal relationship, we need to control for confounding variables that might change the probability of a given treatment assignment. Otherwise, a situation might arise in which one treatment appears better only because it was more likely to be assigned to an individual more likely to exhibit a positive outcome -- not because it is more effective.
+This phenomenon is known as **Simpson's Paradox** (@Pearl2014): when the association between two variables reverses upon conditioning of a third variable. For causal inference, it implies that in order to obtain a true causal relationship, we need to control for confounding variables that might change the probability of a given treatment assignment. Otherwise, a situation might arise in which one treatment appears better only because it was more likely to be assigned to an individual more likely to exhibit a positive outcome -- not because it is more effective.
 :::
 
 {{< pagebreak >}}
@@ -250,9 +254,9 @@ plot([power_sharp, power_weak],
           yaxis = "Power",
           labels = ["Sharp Null" "Weak Null"])
 
-savefig()
 ```
 
+**Comments**: The power of the weak null hypothesis test is higher than the power of the sharp null hypothesis test across all sample sizes, though they converge to the same value at $n = 500$. This highlights the fact that jaskdfl;ajklefjl;asd
 
 {{< pagebreak >}}
 
