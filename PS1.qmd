@@ -65,9 +65,9 @@ for two units $i \neq j$?
 :::{.callout-note title="Answer"}
 WLOG, assume that $A_i$'s treatment is sampled first, then $A_j$. Then, 
 
-$P(A_i = a_i, A_j = a_j) = P(A_j = a_j | A_i = a_i) \cdot P(A_i = a_i)$
+$$P(A_i = a_i, A_j = a_j) = P(A_j = a_j | A_i = a_i) \cdot P(A_i = a_i)$$
 
-Plugging in part (a) and noting that the number of total units and treated units for $A_j$ is reduced by 1 after sampling $A_i$, we find that the joint distribution of $A_i$ and $A_j$ is given by:
+Plugging in part (a) and noting that the number of total units (and possibly treated units) for $A_j$ is reduced by 1 after sampling $A_i$, we find that the joint distribution of $A_i$ and $A_j$ is given by:
 
 - $P(A_i = 1, A_j = 1) = \frac{m}{n} \cdot \frac{m-1}{n-1} = \frac{m(m-1)}{n(n-1)}$
 - $P(A_i = 0, A_j = 1) = \frac{m}{n} \cdot \Big(1 - \frac{m-1}{n-1}\Big) = \frac{m(n-m)}{n(n-1)}$
@@ -94,17 +94,17 @@ What are $\mathbb{V}(A_i)$ and $Cov(A_i, A_j)$ for $i \neq j$?
 
 **Variance**: Since $A_i$ is marginally $\text{Bernoulli}(\frac{m}{n})$, the variance is known to be 
 
-$\mathbb{V}(A_i) = \frac{m}{n}(1 - \frac{m}{n}) = \frac{m}{n}(\frac{n - m}{n})$.
+$$\mathbb{V}(A_i) = \frac{m}{n}(1 - \frac{m}{n}) = \frac{m}{n}(\frac{n - m}{n})$$
 
 Note that $E(A_i) = P(A_i = 1) = \frac{m}{n}$; then, one can derive this as 
 
-$\mathbb{V}(A_i) = E(A_i^2) - E(A_i)^2 = \sum_{a_i = 0}^1 a_i^2\cdot P(A_i = a_i) - (\frac{m}{n})^2 = \frac{m}{n}(1 - \frac{m}{n}$
+$$\mathbb{V}(A_i) = E(A_i^2) - E(A_i)^2 = \sum_{a_i = 0}^1 a_i^2\cdot P(A_i = a_i) - (\frac{m}{n})^2 = \frac{m}{n}(1 - \frac{m}{n})$$
 
 which gives the same result.
 
 **Covariance**: Using the property of covariance that $Cov(A_i, A_j) = E(A_iA_j) - E(A_i)E(A_j)$, we can first note that $E(A_i) = E(A_j) = P(A_i = 1) = \frac{m}{n}$. Additionally, $E(A_iA_j) = P(A_i = 1, A_j = 1) = \frac{m(m-1)}{n(n-1)}$ from the joint probability table solved in part (b). Therefore, the covariance is
 
-$Cov(A_i, A_j) = \frac{m(m-1)}{n(n-1)} - \frac{m^2}{n^2} = frac{nm^2 - nm - m^2n + m^2}{n^2(n-1)} = -\frac{1}{n}(\frac{m(n-m)}{n(n-1)})$
+$$Cov(A_i, A_j) = \frac{m(m-1)}{n(n-1)} - \frac{m^2}{n^2} = \frac{nm^2 - nm - m^2n + m^2}{n^2(n-1)} = -\frac{1}{n}(\frac{m(n-m)}{n(n-1)})$$
 
 :::
 
@@ -114,7 +114,7 @@ What is the sample ATT in expectation?
 
 :::{.callout-note title="Answer"}
 
-We can compute the expectation of the sample ATT using the linearity of expectation, noting that $A_i \perp\!\!\!\!\perp Y_i(a)$ by definition of a CRE, and that $E(A_i) = P(A_i = 1) = \frac{m}{n}$. Therefore, we have
+We can compute the expectation of the sample ATT using the linearity of expectation, noting that $A_i \perp\!\!\!\!\perp Y_i(a)$ by definition of a CRE counterfactual outcome, and that $E(A_i) = P(A_i = 1) = \frac{m}{n}$. Therefore, we have
 
 \begin{align*}
 E(\theta^{ATT}) &= \frac{1}{m}\sum_{i=1}^nE(A_i(Y_i(1) - Y_i(0)))\\
@@ -127,26 +127,23 @@ So, in expectation, the sample ATT is equal to the population ATE (that is, $E(\
 
 :::
 
-{{< pagebreak >}}
-
-
 ## Question 3
 
-Let $Y_i(1) = Y_i(0) + \theta$. Show that $\mathbb{V}(Y_i(1)) = \mathbb{V}(Y_i(0))$ and the correlation equations 1, where expectations are sample expectations
+Let $Y_i(1) = Y_i(0) + \theta$. Show that $\mathbb{V}(Y_i(1)) = \mathbb{V}(Y_i(0))$ and the correlation equals 1, where expectations are sample expectations.
 
 :::{.callout-note title="Answer"}
 
 Since $Y_i(1) = Y_i(0) + \theta$, we have the property of variance that $\mathbb{V}(X + b) = \mathbb{V}(X)$. Even when considering the sample variance, this follows because
 
-$\mathbb{V}(X + b) = \mathbb{E}((X + b - \mathbb{E}(X + b))^2) = \mathbb{E}((X - \mathbb{E}(X))^2) = \mathbb{V}(X)$
+$$\mathbb{V}(X + b) = \mathbb{E}((X + b - \mathbb{E}(X) - b)^2) = \mathbb{E}((X - \mathbb{E}(X))^2) = \mathbb{V}(X)$$
 
 with $b$ canceling due to linearity of expectation. Therefore, substituting in the given equality we have 
 
-$\mathbb{V}(Y_i(1)) = \mathbb{V}(Y_i(0) + \theta) = \mathbb{V}(Y_i(0))$
+$$\mathbb{V}(Y_i(1)) = \mathbb{V}(Y_i(0) + \theta) = \mathbb{V}(Y_i(0))$$
 
 Using this, we can note the similar property of covariance that $Cov(X + b, Y + c) = Cov(X, Y)$; in the sample setting this follows from
 
-$Cov(X + b, Y + c) = \mathbb{E}((X + b - \mathbb{E}(X + b))(X + c - \mathbb{E}(X + c))) = \mathbb{E}((X - \mathbb{E}(X))(X - \mathbb{E}(X)))= Cov(X, Y)$
+$$Cov(X + b, Y + c) = \mathbb{E}((X + b - \mathbb{E}(X + b))(X + c - \mathbb{E}(X + c))) = \mathbb{E}((X - \mathbb{E}(X))(X - \mathbb{E}(X)))= Cov(X, Y)$$
 
 Using this property, we have that
 
@@ -162,7 +159,6 @@ thereby completing the proof. $\square$
 
 :::
 
-{{< pagebreak >}}
 
 ## Question 4
 
@@ -173,9 +169,7 @@ four. The ordering in which the cups have been served is random. What is the pro
 you correctly guess 0, 1, 2, 3, or 4 of all of the cups that had tea poured first?
 
 :::{.callout-note title="Answer"}
-There are 70 possible ways to choose 4 out of 8 cups as those that had tea poured first (thereby leaving the remaining 4 as those that had milk poured first). This is because ${8 \choose 4} = \frac{8!}{4!(8-4)!} = 70$. 
-
-Therefore, the probability of guessing $k$ cups correctly is ${4 \choose k} \cdot {4 \choose 4-k} \cdot \frac{1}{70}$. That is, the probability is the product the number of possible ways to choose $k$ cups correctly and the number of possible ways to choose the remaining $4-k$ cups incorrectly, divided by the total number of possible ways to choose 4 cups.
+There are 70 possible ways to choose 4 out of 8 cups as those that had tea poured first (thereby leaving the remaining 4 as those that had milk poured first). This is because ${8 \choose 4} = \frac{8!}{4!(8-4)!} = 70$. Therefore, the probability of guessing $k$ cups correctly is ${4 \choose k} \cdot {4 \choose 4-k} \cdot \frac{1}{70}$. That is, the probability is the product the number of possible ways to choose $k$ cups correctly and the number of possible ways to choose the remaining $4-k$ cups incorrectly, divided by the total number of possible ways to choose 4 cups.
 
 Hence, we have:
 
@@ -187,7 +181,6 @@ Hence, we have:
 
 :::
 
-{{< pagebreak >}}
 
 ## Question 5
 
@@ -229,7 +222,6 @@ in the interpretation of data?
 This phenomenon is known as **Simpson's Paradox** (@Pearl2014): when the association between two variables reverses upon conditioning of a third variable. For causal inference, it implies that in order to obtain a true causal relationship, we need to control for confounding variables that might change the probability of a given treatment assignment. Otherwise, a situation might arise in which one treatment appears better only because it was more likely to be assigned to an individual more likely to exhibit a positive outcome -- not because it is more effective.
 :::
 
-{{< pagebreak >}}
 
 ## Question 6
 
@@ -251,7 +243,8 @@ function run_trial(μ₀, μ₁, σ², n, α, n_sim, B)
   Y0 = rand(Normal(μ₀, sqrt(σ²)), n)
 
   # sample treatment assignment matrix
-  A = stack(broadcast(n -> sample(vcat(ones(n÷2), zeros(n÷2)), n, replace = false), fill(n, n_sim)))
+  A = stack(broadcast(n -> sample(vcat(ones(n÷2), zeros(n÷2)), n, 
+    replace = false), fill(n, n_sim)))
   Y = map(A -> (@. A * Y1 + (1 - A) * Y0), eachcol(A))
 
   # calculate difference-in-means test statistic across simulations
@@ -296,6 +289,9 @@ result = [run_trial(μ₀, μ₁, σ², n, α, n_sim, B) for n in ns]
 power_sharp = [r[1] for r in result]
 power_weak = [r[2] for r in result]
 
+println("Sharp Power: " * string(power_sharp))
+println("Weak Power: " * string(power_weak))
+
 ```
 
 Finally, we plot the output of the experiment:
@@ -309,7 +305,7 @@ plot([power_sharp, power_weak],
 
 ```
 
-**Comments**: The power of the weak null hypothesis test is (slightly) higher than the power of the sharp null hypothesis test across all sample sizes, though they converge to the same value at $n = 500$. This is consistent with the fact that Fisher's sharp null implies Neyman's weak null, but that the converse is not necessarily true. However, given that the difference is quite small, it is likely that the sharp null and weak null tests will have similar power in practice, at least for reasonably large sample sizes.
+**Comments**: The power of the weak null hypothesis test is (slightly) higher than the power of the sharp null hypothesis test across all sample sizes, though they converge to the same value at $n = 500$. This is consistent with the fact that Fisher's sharp null implies Neyman's weak null, but that the converse is not necessarily true; the power of the weak null detects all cases where the sharp null is true, and some where the sharp null is not true. However, given that the difference is quite small, it is likely that the sharp null and weak null tests will have similar power in practice, at least for reasonably large sample sizes.
 
 :::
 
@@ -360,7 +356,7 @@ Plugging in the solution for $\alpha$ into the solution for $\beta$, we obtain
 
 and therefore
 
-$\hat{\alpha} =  \hat{\beta}\bar{A} - \bar{Y} = \hat{\beta} = \frac{\sum(Y_i - \bar{Y})(A_i - \bar{A}}{\sum(A_i - \bar{A})^2}\bar{A} - \bar{Y}$
+$$\hat{\alpha} =  \hat{\beta}\bar{A} - \bar{Y} = \hat{\beta} = \frac{\sum(Y_i - \bar{Y})(A_i - \bar{A})}{\sum(A_i - \bar{A})^2}\bar{A} - \bar{Y}$$
 
 By the second derivative test, we can take the partial derivatives to get
 
@@ -377,20 +373,41 @@ Now, since $A \in \{0, 1\}$, we have
 
 
 \begin{align*}
-D(\alpha, \beta) &= n\cdot \frac{1}{n}\sum_{i=1}^nA_i^2 - \bar{A} = \\
-\sum_{i=1}^nA_i - \frac{1}{n}\sum_{i=1}^nA_i &= \frac{n-1}{n} > 0
+D(\alpha, \beta) &= n\cdot \frac{1}{n}\sum_{i=1}^nA_i^2 - \bar{A}^2 = \\
+\sum_{i=1}^nA_i - (\frac{1}{n}\sum_{i=1}^nA_i)^2 > 0
 \end{align*}
 
 
 and by the second derivative test, $D(\alpha, \beta) > 0$ and $\frac{\partial}{\partial \alpha^2} L(\alpha, \beta) = n > 0$ implies $(\hat{\alpha}, \hat{\beta})$ is a minimum. It must be a global minimum since it was found to be a unique critical point in the first derivative test, therefore the endpoints cannot be smaller.
 
-Therefore, the solution to the linear program is
 
-$\hat{\beta} = \frac{\sum(Y_i - \bar{Y})(A_i - \bar{A}}{\sum(A_i - \bar{A})^2}$
+Therefore, one solution to the linear program is the simple linear regression equation,
+
+$$\hat{\beta} = \frac{\sum(Y_i - \bar{Y})(A_i - \bar{A}}{\sum(A_i - \bar{A})^2}$$
 
 and
 
-$\hat{\alpha} = \frac{\sum(Y_i - \bar{Y})(A_i - \bar{A}}{\sum(A_i - \bar{A})^2}\bar{A} - \bar{Y}$
+$$\hat{\alpha} = \frac{\sum(Y_i - \bar{Y})(A_i - \bar{A}}{\sum(A_i - \bar{A})^2}\bar{A} - \bar{Y}$$
+
+However, we can simplify $\hat{\beta}$ even further. Note that by construction of the completely randomized experiment, $\bar{A} = \frac{m}{n}$. Therefore,
+
+
+\begin{align*}
+\sum_{i=1}^n (A_i - \bar{A})^2 &= sum_{i=1}^nA_i^2 - 2\frac{m}{n}sum_{i=1}^nA-i + sum_{i=1}^n(\frac{m}{n})^2\\
+&= m - 2m + \frac{m^2}{n} = \frac{m(m-n)}{n}
+\end{align*}
+
+
+Furthermore, since the numerator of $\hat{\beta}$ is $\sum_{i=1}^n(Y_i - \bar{Y})(A_i - \bar{A})$, we can simplify as follows using the same aforementioned properties of $A_i$. We start by writing in terms of a step we already solved previously, and then rewrite algebraically in terms of $\bar{Y}_1$ and $\bar{Y}_0$:
+
+\begin{align*}
+\sum_{i=1}^n(Y_i - \bar{Y})(A_i - \bar{A}) &= m\bar{Y} - \frac{m}{n}\bar{Y}_1\\
+&= \frac{1}{n}(\sum A_iY_i + \sum (1 - A_i)Y_i)) - \frac{1}{m}\sum A_iY_i\\
+&= \frac{m}{n}((m-n)\bar{Y}_1 + (n-m)\bar{Y}_0)\\
+&= \frac{m(m-n)}{n}(\bar{Y}_1 - \bar{Y}_0)
+\end{align*}
+
+Therefore, plugging this into the numerator, $\hat{\beta} = \frac{m(m-n)}{n}(\bar{Y}_1 - \bar{Y}_0) / \frac{m(m-n)}{n} = \bar{Y}_1 - \bar{Y}_0$, which is the difference-in-means estimator! It follows that $\hat{\alpha} = (\bar{Y}_1 - \bar{Y}_0)\bar{A} - \bar{Y}$.
 
 :::
 
@@ -400,19 +417,7 @@ Is $\hat{\beta}$ a valid estimator of the ATE?
 
 :::{.callout-note title="Answer"}
 
-Yes, $\hat{\beta}$ is a valid estimator of the ATE. We can show this by proving it is unbiased; that $E(\hat{\beta}) = \beta)$. Note that by construction of the completely randomized experiment, $\bar{A} = \frac{m}{n}$. Therefore,
-
-
-
-\begin{align*}
-\sum_{i=1}^n (A_i - \bar{A})^2 &= sum_{i=1}^nA_i^2 - 2\frac{m}{n}sum_{i=1}^nA-i + sum_{i=1}^n(\frac{m}{n})^2\\
-&= m - 2m + \frac{m^2}{n} = \frac{m(m-n)}{n}
-\end{align*}
-
-
-Therefore, it is a constant that can be moved outside the expectation.
-
-Then, noting that  the numerator of $\hat{\beta}$ is $(\hat{Y})(\hat{A}) - \frac{1}{n}\sum_{i=1}^n A_i Y_i$ from part (a), we can substitute $Y_i = A_i Y_i(1) + (1 - A_i) Y_i(0)$ and use linearity of expectation to evaluate the left and right terms of the subtraction separately.
+Yes, $\hat{\beta}$ is a valid estimator of the ATE. We can show this by proving it is unbiased; that $E(\hat{\beta}) = \beta)$. Recall from (a) that $\sum_{i=1}^n (A_i - \bar{A})^2 = \frac{m(m-n)}{n}$. Then, noting that the numerator of $\hat{\beta}$ is $n(\bar{Y})(\bar{A}) - \frac{1}{n}\sum_{i=1}^n A_i Y_i$ from part (a), we can substitute $Y_i = A_i Y_i(1) + (1 - A_i) Y_i(0)$ and use linearity of expectation to evaluate the left and right terms of the subtraction separately.
 
 The expectation of the first term in the subtraction reduces to
 
